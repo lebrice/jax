@@ -22,7 +22,7 @@ import inspect
 import logging
 import operator as op
 import weakref
-from typing import NamedTuple, Any, Union, cast
+from typing import NamedTuple, Any, ParamSpec, TypeVar, Union, cast
 import threading
 import warnings
 
@@ -807,8 +807,10 @@ def _flat_axes_specs(abstracted_axes, *args, **kwargs
             isinstance(l, tuple) and all_leaves(l, lambda x: x is None))
   return broadcast_prefix(abstracted_axes, args, ax_leaf)
 
+_P = ParamSpec("_P")
+_OutT = TypeVar("_OutT", covariant=True)
 
-class JitWrapped(stages.Wrapped):
+class JitWrapped(stages.Wrapped[_P, _OutT]):
 
   def eval_shape(self, *args, **kwargs):
     """See ``jax.eval_shape``."""

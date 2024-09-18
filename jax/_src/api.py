@@ -29,7 +29,7 @@ from functools import partial, lru_cache
 import inspect
 import math
 import typing
-from typing import (Any, Literal, NamedTuple, TypeVar, overload,
+from typing import (Any, Literal, NamedTuple, ParamSpec, TypeVar, overload,
                     cast)
 import weakref
 
@@ -137,9 +137,11 @@ config.debug_infs._add_hooks(_update_debug_special_global,
 
 float0 = dtypes.float0
 
+_P = ParamSpec("_P")
+_OutT = TypeVar("_OutT", covariant=True)
 
 def jit(
-  fun: Callable,
+  fun: Callable[_P, _OutT],
   in_shardings=sharding_impls.UNSPECIFIED,
   out_shardings=sharding_impls.UNSPECIFIED,
   static_argnums: int | Sequence[int] | None = None,
@@ -151,7 +153,7 @@ def jit(
   backend: str | None = None,
   inline: bool = False,
   abstracted_axes: Any | None = None,
-) -> pjit.JitWrapped:
+) -> pjit.JitWrapped[_P, _OutT]:
   """Sets up ``fun`` for just-in-time compilation with XLA.
 
   Args:

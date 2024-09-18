@@ -2518,7 +2518,7 @@ core.pytype_aval_mappings[ShapeDtypeStruct] = _sds_aval_mapping
 
 
 @api_boundary
-def eval_shape(fun: Callable, *args, **kwargs):
+def eval_shape(fun: Callable[_P, Any], *args: _P.args, **kwargs: _P.kwargs):
   """Compute the shape/dtype of ``fun`` without any FLOPs.
 
   This utility function is useful for performing shape inference. Its

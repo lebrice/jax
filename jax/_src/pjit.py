@@ -812,11 +812,11 @@ _OutT = TypeVar("_OutT", covariant=True)
 
 class JitWrapped(stages.Wrapped[_P, _OutT]):
 
-  def eval_shape(self, *args, **kwargs):
+  def eval_shape(self, *args: _P.args, **kwargs: _P.kwargs):
     """See ``jax.eval_shape``."""
     raise NotImplementedError
 
-  def trace(self, *args, **kwargs) -> stages.Traced:
+  def trace(self, *args: _P.args, **kwargs: _P.kwargs) -> stages.Traced:
     raise NotImplementedError
 
 
